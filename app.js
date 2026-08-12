@@ -66,4 +66,24 @@ function createMaze () {
     })
 }
 createMaze()
+
+function renderPacMan () {
+    const pacManElement = document.createElement('img')
+    pacManElement.src = './Images/pac-man.gif'
+    pacManElement.classList.add('pac-man')
+    cellsArray[pacMan.row][pacMan.col].appendChild(pacManElement)
+
+}
+
+renderPacMan()
+
+function renderGhost () {
+    const ghostElement = document.createElement('img')
+    ghostElement.src = './Images/ghost.gif'
+    ghostElement.classList.add('ghost')
+    cellsArray[ghost.row][ghost.col].appendChild(ghostElement)
+}
+renderGhost()
+
+
 /*----------------------------- Event Listeners -----------------------------*/

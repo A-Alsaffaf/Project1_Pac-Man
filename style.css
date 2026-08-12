@@ -23,9 +23,22 @@
     /* background-color: aquamarine; */
     /* border: solid; */
     border-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .w {
     background-color: gray;
     border: none;
+}
+
+.pac-man {
+    width: 15px;
+    height: 15px;
+}
+
+.ghost {
+    width: 15px;
+    height: 15px;
 }
