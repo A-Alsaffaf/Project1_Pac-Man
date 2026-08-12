@@ -85,5 +85,46 @@ function renderGhost () {
 }
 renderGhost()
 
+function handleKeyPress (event) {
 
+    let pKey = event.key //pressed key
+    let nextMoveDirection
+    
+    if (pKey === 'a' || pKey === 'ArrowLeft') {
+        nextMoveDirection = 'left'
+    }else if (pKey === 'd' || pKey === 'ArrowRight') {
+        nextMoveDirection = 'right'
+    }else if (pKey === 'w' || pKey === 'ArrowUp') {
+        nextMoveDirection = 'up'
+    }else if (pKey === 's' || pKey === 'ArrowDown') {
+        nextMoveDirection = 'down'
+    }else {
+        return 
+    }
+    
+    event.preventDefault()
+    return nextMoveDirection
+}
+
+function calNextMove (nextMoveDirection) {
+    let nextMovePos = {
+        row: pacMan.row,
+        col: pacMan.col
+    }
+    
+    if (nextMoveDirection === 'left') {
+        nextMove.col -= 1
+    }else if (nextMoveDirection === 'right') {
+        nextMovePos.col += 1
+    }else if (nextMoveDirection === 'up') {
+        nextMovePos.row -= 1
+    }else if (nextMoveDirection === 'down') {
+        nextMovePos.row += 1
+    }else {
+        return 
+    }
+
+    return nextMovePos
+}
 /*----------------------------- Event Listeners -----------------------------*/
+document.addEventListener ('keydown', handleKeyPress)
