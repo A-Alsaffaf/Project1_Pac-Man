@@ -32,6 +32,11 @@ const spawnPositions = {
 
 /*---------------------------- Variables (state) ----------------------------*/
 let cellsArray = []
+let ghost = {
+    row: 10,
+    col: 9,
+    direction: 'up',
+}
 let pacMan = {
     row: 15,
     col: 9,
@@ -41,6 +46,7 @@ let gameState = {
     lives: 3,
     score: 0,
     pelletsLeft: 0, // Todo: Count of pellets left in the maze dynamically instead of hardcoding it
+    isGameOver: false,
 }
 /*------------------------ Cached Element References ------------------------*/
 const mazeContainer = document.getElementById('maze-container')
