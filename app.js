@@ -1,5 +1,3 @@
-
-
 console.log("Simple Pac-Man Game");
 
 /*-------------------------------- Constants --------------------------------*/ 
@@ -27,14 +25,29 @@ const mazeArray = [
   ["w","w","w","w","w","w","w","w","w","w","w","w","w","w","w","w","w","w","w"]
 ];
 
+const spawnPositions = {
+    pacMan: { row: 15, col: 9 },
+    ghost: { row: 10, col: 9 }
+};
+
 /*---------------------------- Variables (state) ----------------------------*/
 let cellsArray = []
+let pacMan = {
+    row: 15,
+    col: 9,
+    direction: 'left',
+}
+let gameState = {
+    lives: 3,
+    score: 0,
+    pelletsLeft: 0, // Todo: Count of pellets left in the maze dynamically instead of hardcoding it
+}
 /*------------------------ Cached Element References ------------------------*/
 const mazeContainer = document.getElementById('maze-container')
-console.log(mazeContainer);
-
 
 /*-------------------------------- Functions --------------------------------*/
+
+// this function builds the maze in HTML, iterating over the mazeArray and creating cell elements as divs with appropriate classes for walls, pellets, etc.
 function createMaze () {
     mazeArray.forEach((row, rIndex) => {
         cellsArray.push([])
@@ -46,6 +59,5 @@ function createMaze () {
         })
     })
 }
-
 createMaze()
 /*----------------------------- Event Listeners -----------------------------*/
