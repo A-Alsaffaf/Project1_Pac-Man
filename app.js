@@ -127,10 +127,34 @@ function calNextMove (nextMoveDirection) {
     return nextMovePos
 }
 
+function validateNextMove (nextPosition) {
+    const nextPosAtCellsArray = cellsArray[nextPosition.row][nextPosition.col]
+    if (nextPosAtCellsArray.classList.contains('w')) {
+        return false;
+    }
+    return true;
+}
+
+function movePacMan (nextPosition) {
+    if (validateNextMove(nextPosition)) {
+        // Remove Pac-Man from the current position
+        const currentCell = cellsArray[pacMan.row][pacMan.col];
+        currentCell.innerHTML = ''; // Clear the cell
+        //change pacMan position
+        pacMan.row = nextPosition.row;
+        pacMan.col = nextPosition.col;
+        // Render Pac-Man in the new position
+        renderPacMan();
+    }else {
+        return;
+    }
+}
+
 function handleKeyPress (event) {
 
 const nextMoveDirection = catchPressedKeyValue(event)
 const nextPosition = calNextMove(nextMoveDirection)
+movePacMan(nextPosition)
 
 }
 
