@@ -11,8 +11,8 @@ const mazeArray = [
   ["w","p","p","w","w","p","p","p","p","w","p","p","p","p","w","w","p","p","w"],
   ["w","p","w","w","w","w","p","w","w","w","w","w","p","w","w","w","w","p","w"],
   ["w","p","p","w","w","p","n","n","n","n","n","n","n","p","w","w","p","p","w"],
-  ["w","p","p","p","p","p","n","w","w","p","w","w","n","p","p","p","p","p","w"],
-  ["w","w","p","w","w","w","n","w","p","g","p","w","n","w","w","w","p","w","w"],
+  ["w","p","p","p","p","p","n","w","w","n","w","w","n","p","p","p","p","p","w"],
+  ["w","w","p","w","w","w","n","w","n","g","n","w","n","w","w","w","p","w","w"],
   ["w","p","p","p","p","p","n","w","w","w","w","w","n","p","p","p","p","p","w"],
   ["w","p","p","w","w","p","n","n","n","n","n","n","n","p","w","w","p","p","w"],
   ["w","p","w","w","w","w","p","w","w","w","w","w","p","w","w","w","w","p","w"],
@@ -65,7 +65,6 @@ function createMaze () {
         })
     })
 }
-createMaze()
 
 function renderPacMan () {
     const pacManElement = document.createElement('img')
@@ -75,15 +74,12 @@ function renderPacMan () {
 
 }
 
-renderPacMan()
-
 function renderGhost () {
     const ghostElement = document.createElement('img')
     ghostElement.src = './Images/ghost.gif'
     ghostElement.classList.add('ghost')
     cellsArray[ghost.row][ghost.col].appendChild(ghostElement)
 }
-renderGhost()
 
 function catchPressedKeyValue (event) {
     let pKey = event.key //pressed key
@@ -148,6 +144,12 @@ function movePacMan (nextPosition) {
     }else {
         return;
     }
+}
+
+function initGame () {
+    createMaze()
+    renderPacMan()
+    renderGhost()
 }
 
 function handleKeyPress (event) {
