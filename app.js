@@ -85,8 +85,7 @@ function renderGhost () {
 }
 renderGhost()
 
-function handleKeyPress (event) {
-
+function catchPressedKeyValue (event) {
     let pKey = event.key //pressed key
     let nextMoveDirection
     
@@ -101,7 +100,7 @@ function handleKeyPress (event) {
     }else {
         return 
     }
-    
+    console.log(nextMoveDirection);
     event.preventDefault()
     return nextMoveDirection
 }
@@ -113,7 +112,7 @@ function calNextMove (nextMoveDirection) {
     }
     
     if (nextMoveDirection === 'left') {
-        nextMove.col -= 1
+        nextMovePos.col -= 1
     }else if (nextMoveDirection === 'right') {
         nextMovePos.col += 1
     }else if (nextMoveDirection === 'up') {
@@ -124,7 +123,18 @@ function calNextMove (nextMoveDirection) {
         return 
     }
 
+    console.log(nextMovePos);
     return nextMovePos
 }
+
+function handleKeyPress (event) {
+
+const nextMoveDirection = catchPressedKeyValue(event)
+const nextPosition = calNextMove(nextMoveDirection)
+
+}
+
+
+
 /*----------------------------- Event Listeners -----------------------------*/
 document.addEventListener ('keydown', handleKeyPress)
