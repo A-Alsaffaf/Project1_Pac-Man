@@ -66,6 +66,7 @@ function createMaze () {
     })
 }
 
+
 function renderPacMan () {
     const pacManElement = document.createElement('img')
     pacManElement.src = './Images/pac-man.gif'
@@ -74,11 +75,26 @@ function renderPacMan () {
 
 }
 
+
+
 function renderGhost () {
     const ghostElement = document.createElement('img')
     ghostElement.src = './Images/ghost.gif'
     ghostElement.classList.add('ghost')
     cellsArray[ghost.row][ghost.col].appendChild(ghostElement)
+}
+
+function renderPellets() {
+    cellsArray.forEach((row, rIndex) => {
+        row.forEach((cell, cIndex) => {
+            if (cell.classList.contains('p')) { 
+            const pelletElement = document.createElement('img')
+            pelletElement.src = './Images/Pellet.png'
+            pelletElement.classList.add ('pellets')
+            cell.appendChild(pelletElement)
+            }
+        })
+    });
 }
 
 function catchPressedKeyValue (event) {
@@ -150,6 +166,7 @@ function initGame () {
     createMaze()
     renderPacMan()
     renderGhost()
+    renderPellets()
 }
 
 function handleKeyPress (event) {
