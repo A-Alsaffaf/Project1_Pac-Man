@@ -45,7 +45,7 @@ let pacMan = {
 let gameState = {
     lives: 3,
     score: 0,
-    pelletsLeft: 0, // Todo: Count of pellets left in the maze dynamically instead of hardcoding it
+    pelletsLeft: null, 
     isGameOver: false,
 }
 /*------------------------ Cached Element References ------------------------*/
@@ -66,7 +66,6 @@ function createMaze () {
     })
 }
 
-
 function renderPacMan () {
     const pacManElement = document.createElement('img')
     pacManElement.src = './Images/pac-man.gif'
@@ -74,8 +73,6 @@ function renderPacMan () {
     cellsArray[pacMan.row][pacMan.col].appendChild(pacManElement)
 
 }
-
-
 
 function renderGhost () {
     const ghostElement = document.createElement('img')
@@ -162,18 +159,43 @@ function movePacMan (nextPosition) {
     }
 }
 
+function collectPellet (nextPos) {
+    const cellAtNextPacPos = cellsArray[nextPos.row][nextPos.col]
+
+    if (cellAtNextPacPos.querySelector('.pellets')) {
+        gameState.score += 1
+        gameState.pelletsLeft -= 1
+        console.log('SCORE: ' + gameState.score);
+        cellAtNextPacPos.innerHTML = ''
+    }
+}
+
+function calPelletsLeft() {
+    let totalPelletsLeft = 0
+    cellsArray.forEach((row,rIndex) => {
+        row.forEach((col, cIndex) => {
+            if (cellsArray[rIndex][cIndex].querySelector('.pellets')) {totalPelletsLeft += 1}
+        })
+    })
+    gameState.pelletsLeft = totalPelletsLeft
+    console.log('Pellets Left: ' + gameState.pelletsLeft);
+}
+
 function initGame () {
     createMaze()
     renderPacMan()
     renderGhost()
     renderPellets()
+    calPelletsLeft()
 }
 
 function handleKeyPress (event) {
 
 const nextMoveDirection = catchPressedKeyValue(event)
 const nextPosition = calNextMove(nextMoveDirection)
+collectPellet(nextPosition)
 movePacMan(nextPosition)
+calPelletsLeft()
 
 }
 
