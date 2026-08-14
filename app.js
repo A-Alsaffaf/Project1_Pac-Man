@@ -50,6 +50,7 @@ let gameState = {
 }
 /*------------------------ Cached Element References ------------------------*/
 const mazeContainer = document.getElementById('maze-container')
+const liveElements = document.getElementsByClassName('lives')
 
 /*-------------------------------- Functions --------------------------------*/
 
@@ -132,11 +133,6 @@ function calNextMove (nextMoveDirection) {
         return 
     }
 
-    if (checkCollision()) {
-        nextMovePos.row = 15
-        nextMovePos.col = 9
-        console.log('is Collided: ' + checkCollision());
-    }
     console.log(nextMovePos);
     return nextMovePos
 
@@ -202,13 +198,23 @@ function checkCollision () {
 }
 
 function respawnPacMan () {
-        if (gameState.lives > 1) {
+        if (gameState.lives >= 1) {
             pacMan.row = spawnPositions.pacMan.row
             pacMan.col = spawnPositions.pacMan.col
             gameState.lives -= 1
             console.log(gameState.lives + ' Lives Left');
             
         }
+}
+
+function livesDisplay () {
+    if (gameState.lives === 2) {
+        liveElements[2].querySelector('img').style.visibility = 'hidden'
+    }else if (gameState.lives === 1) {
+        liveElements[1].querySelector('img').style.visibility = 'hidden'
+    }else if (gameState.lives === 0) {
+        liveElements[0].querySelector('img').style.visibility = 'hidden'
+    }
 }
 
 function initGame () {
@@ -220,13 +226,14 @@ function initGame () {
 }
 
 function handleKeyPress (event) {
-
-const nextMoveDirection = catchPressedKeyValue(event)
-const nextPosition = calNextMove(nextMoveDirection)
-collectPellet(nextPosition)
-movePacMan(nextPosition)
-calPelletsLeft()
-
+    if (gameState.lives >= 1) {
+        const nextMoveDirection = catchPressedKeyValue(event)
+        const nextPosition = calNextMove(nextMoveDirection)
+        collectPellet(nextPosition)
+        movePacMan(nextPosition)
+        calPelletsLeft()
+        livesDisplay()
+    }
 }
 
 
