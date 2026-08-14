@@ -132,16 +132,23 @@ function calNextMove (nextMoveDirection) {
         return 
     }
 
+    if (checkCollision()) {
+        nextMovePos.row = 15
+        nextMovePos.col = 9
+        console.log('is Collided: ' + checkCollision());
+    }
     console.log(nextMovePos);
     return nextMovePos
+
 }
 
 function validateNextMove (nextPosition) {
     const nextPosAtCellsArray = cellsArray[nextPosition.row][nextPosition.col]
     if (nextPosAtCellsArray.classList.contains('w')) {
         return false;
+    }else {
+        return true
     }
-    return true;
 }
 
 function movePacMan (nextPosition) {
@@ -152,6 +159,10 @@ function movePacMan (nextPosition) {
         //change pacMan position
         pacMan.row = nextPosition.row;
         pacMan.col = nextPosition.col;
+        // check if PacMan has collided after changing the position and before rendering, it updates the position to te respawn if collided before rendering
+        if (checkCollision()) {
+            respawnPacMan()
+        }
         // Render Pac-Man in the new position
         renderPacMan();
     }else {
@@ -179,6 +190,25 @@ function calPelletsLeft() {
     })
     gameState.pelletsLeft = totalPelletsLeft
     console.log('Pellets Left: ' + gameState.pelletsLeft);
+}
+
+function checkCollision () {
+    let isCollided = false 
+    if (pacMan.row === ghost.row && pacMan.col === ghost.col) {
+        console.log('you have lost a live');
+        isCollided = true
+    }
+    return isCollided
+}
+
+function respawnPacMan () {
+        if (gameState.lives > 1) {
+            pacMan.row = spawnPositions.pacMan.row
+            pacMan.col = spawnPositions.pacMan.col
+            gameState.lives -= 1
+            console.log(gameState.lives + ' Lives Left');
+            
+        }
 }
 
 function initGame () {
