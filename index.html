@@ -6,11 +6,15 @@
     <title>Simple Pac-Man Game</title>
     <link rel="stylesheet" href="./style.css">
     <script src="./app.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body onload="initGame()">
     
     <div id="game-container">
-        <h1 id="title">Simple Pac-Man Game</h1>
+        <h1 id="title" class="pac-font">Simple Pac-Man Game</h1>
+        <h2 id="score" class="pac-font">0</h2>
         <div id="maze-container"></div>
             <div id="lives-display">
                <div class="lives"><img src="./Images/PacManLive.png" alt="pac-man live"></div> 

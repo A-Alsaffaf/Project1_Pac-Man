@@ -51,6 +51,7 @@ let gameState = {
 /*------------------------ Cached Element References ------------------------*/
 const mazeContainer = document.getElementById('maze-container')
 const liveElements = document.getElementsByClassName('lives')
+const displayScoreElement = document.getElementById('score')
 
 /*-------------------------------- Functions --------------------------------*/
 
@@ -170,10 +171,11 @@ function collectPellet (nextPos) {
     const cellAtNextPacPos = cellsArray[nextPos.row][nextPos.col]
 
     if (cellAtNextPacPos.querySelector('.pellets')) {
-        gameState.score += 1
+        gameState.score += 10
         gameState.pelletsLeft -= 1
         console.log('SCORE: ' + gameState.score);
         cellAtNextPacPos.innerHTML = ''
+        displayScoreElement.textContent = gameState.score
     }
 }
 
