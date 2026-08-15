@@ -52,6 +52,9 @@ let gameState = {
 const mazeContainer = document.getElementById('maze-container')
 const liveElements = document.getElementsByClassName('lives')
 const displayScoreElement = document.getElementById('score')
+const overlayElement = document.getElementById('overlay')
+const endMessageElement = document.getElementById('end-msg')
+const endButtonElement = document.getElementById('end-btn')
 
 /*-------------------------------- Functions --------------------------------*/
 
@@ -219,6 +222,16 @@ function livesDisplay () {
     }
 }
 
+function checkIsGameOver () {
+    if (gameState.isGameOver === true && gameState.pelletsLeft < 1 && gameState.lives >= 1) {
+        overlayElement.style.display = 'flex'
+        endMessageElement.textContent = 'CONGRATS YOU WON'
+    }else if (gameState.isGameOver === true && gameState.pelletsLeft > 0 && gameState.lives < 1) {
+        overlayElement.style.display = 'flex'
+        endMessageElement.textContent = 'GAME OVER'
+    }
+}
+
 function initGame () {
     createMaze()
     renderPacMan()
@@ -228,17 +241,28 @@ function initGame () {
 }
 
 function handleKeyPress (event) {
-    if (gameState.lives >= 1) {
-        const nextMoveDirection = catchPressedKeyValue(event)
-        const nextPosition = calNextMove(nextMoveDirection)
-        collectPellet(nextPosition)
-        movePacMan(nextPosition)
-        calPelletsLeft()
-        livesDisplay()
+    const nextMoveDirection = catchPressedKeyValue(event)
+    const nextPosition = calNextMove(nextMoveDirection)
+    
+    if (gameState.lives >= 1 || gameState.pelletsLeft > 0) {
+        if (!gameState.isGameOver) {
+            collectPellet(nextPosition)
+            movePacMan(nextPosition)
+            calPelletsLeft()
+            livesDisplay()
+        }
     }
+
+    if (gameState.lives < 1 || gameState.pelletsLeft === 0) {
+        gameState.isGameOver = true
+        console.log(gameState.isGameOver);
+    }
+
+    checkIsGameOver()
 }
-
-
 
 /*----------------------------- Event Listeners -----------------------------*/
 document.addEventListener ('keydown', handleKeyPress)
+endButtonElement.addEventListener('click', function () {
+    location.reload()
+})
