@@ -44,8 +44,7 @@ body {
 .cell {
     height: 16px;
     width: 16px;
-    /* background-color: aquamarine; */
-    /* border: solid; */
+    position: relative;
     border-color: black;
     display: flex;
     justify-content: center;
@@ -65,8 +64,10 @@ body {
 }
 
 .ghost {
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
+    position: absolute;
+
 }
 
 .pellets {

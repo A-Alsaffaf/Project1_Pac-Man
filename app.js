@@ -12,7 +12,7 @@ const mazeArray = [
   ["w","p","w","w","w","w","p","w","w","w","w","w","p","w","w","w","w","p","w"],
   ["w","p","p","w","w","p","n","n","n","n","n","n","n","p","w","w","p","p","w"],
   ["w","p","p","p","p","p","n","w","w","n","w","w","n","p","p","p","p","p","w"],
-  ["w","w","p","w","w","w","n","w","n","g","n","w","n","w","w","w","p","w","w"],
+  ["w","w","p","w","w","w","n","w","w","g","w","w","n","w","w","w","p","w","w"],
   ["w","p","p","p","p","p","n","w","w","w","w","w","n","p","p","p","p","p","w"],
   ["w","p","p","w","w","p","n","n","n","n","n","n","n","p","w","w","p","p","w"],
   ["w","p","w","w","w","w","p","w","w","w","w","w","p","w","w","w","w","p","w"],
@@ -32,6 +32,8 @@ const spawnPositions = {
 
 /*---------------------------- Variables (state) ----------------------------*/
 let cellsArray = []
+console.log(cellsArray);
+
 let ghost = {
     row: 10,
     col: 9,
@@ -84,7 +86,7 @@ function renderGhost () {
     const ghostElement = document.createElement('img')
     ghostElement.src = './Images/ghost.gif'
     ghostElement.classList.add('ghost')
-    cellsArray[ghost.row][ghost.col].appendChild(ghostElement)
+    cellsArray[ghost.row][ghost.col].prepend(ghostElement)
 }
 
 function renderPellets() {
@@ -285,20 +287,27 @@ function moveGhost (nextGhostPos) {
     if (validateGhostNextMove(nextGhostPos)) {
     // Remove Ghost from the current position
     const currentGhostCell = cellsArray[ghost.row][ghost.col];
-    currentGhostCell.innerHTML = ''; // Clear the cell
+    currentGhostCell.querySelector('.ghost').remove(); // Clear the cell
+
     //change pacMan position
     ghost.row = nextGhostPos.row;
     ghost.col = nextGhostPos.col;
     // check if PacMan has collided after changing the position and before rendering, it updates the position to te respawn if collided before rendering
     if (checkCollision()) {
         respawnPacMan()
+        renderPacMan()
     }
     // Render Pac-Man in the new position
     // renderPacMan();
     renderGhost()
+
     }else {
         return;
     }
+    setTimeout(() => {
+        currentGhostCell.innerHTML = '<img src="./Images/Pellet.png" class="pellets">'
+        
+    }, 500);
 }
 
 function getValidGhostMove () {
@@ -322,20 +331,7 @@ function initGame () {
     renderGhost()
     renderPellets()
     calPelletsLeft()
-    // interval = setInterval(function () {
-    //     let randomNum = Math.floor(Math.random() * 4)
-    //     let nextRandomDirection
-    //     if (randomNum === 0) {
-    //         nextRandomDirection = 'top'
-    //     }else if (randomNum === 1) {
-    //         nextRandomDirection = 'right'
-    //     }else if (randomNum === 2) {
-    //         nextRandomDirection = 'bottom'
-    //     }else if (randomNum === 3) {
-    //         nextRandomDirection = 'left'
-    //     }
-    //     console.log(`rNum: ${randomNum}, rDirection: ${nextRandomDirection}`);
-    // }, 1000)
+
     interval = setInterval(handleInterval, 500)
 }
 
