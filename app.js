@@ -48,6 +48,7 @@ let gameState = {
     pelletsLeft: null, 
     isGameOver: false,
 }
+let interval 
 /*------------------------ Cached Element References ------------------------*/
 const mazeContainer = document.getElementById('maze-container')
 const liveElements = document.getElementsByClassName('lives')
@@ -232,18 +233,116 @@ function checkIsGameOver () {
     }
 }
 
+function generateDirections () {
+    let randomNum = Math.floor(Math.random() * 4)
+    let nextRandomDirection
+    if (randomNum === 0) {
+        nextRandomDirection = 'up'
+    }else if (randomNum === 1) {
+        nextRandomDirection = 'right'
+    }else if (randomNum === 2) {
+        nextRandomDirection = 'down'
+    }else if (randomNum === 3) {
+        nextRandomDirection = 'left'
+    }
+    console.log(`rNum: ${randomNum}, rDirection: ${nextRandomDirection}`);
+    return nextRandomDirection
+}
+
+function calNextGhostMove (nextGhostMoveDirection) {
+    let nextGhostMovePos = {
+        row: ghost.row,
+        col: ghost.col
+    }
+    
+    if (nextGhostMoveDirection === 'left') {
+        nextGhostMovePos.col -= 1
+    }else if (nextGhostMoveDirection === 'right') {
+        nextGhostMovePos.col += 1
+    }else if (nextGhostMoveDirection === 'up') {
+        nextGhostMovePos.row -= 1
+    }else if (nextGhostMoveDirection === 'down') {
+        nextGhostMovePos.row += 1
+    }else {
+        return 
+    }
+
+    console.log('Current Ghost Position: ' + `row: ${ghost.row}, col: ${ghost.col}`);
+    console.log('Next Ghost Move: ' + `row: ${nextGhostMovePos.row}, col: ${nextGhostMovePos.col}`);
+    return nextGhostMovePos
+}
+
+function validateGhostNextMove (nextPosition) {
+    const nextPosAtCellsArray = cellsArray[nextPosition.row][nextPosition.col]
+    if (nextPosAtCellsArray.classList.contains('w')) {
+        return false;
+    }else {
+        return true
+    }
+}
+
+function moveGhost (nextGhostPos) {
+    if (validateGhostNextMove(nextGhostPos)) {
+    // Remove Ghost from the current position
+    const currentGhostCell = cellsArray[ghost.row][ghost.col];
+    currentGhostCell.innerHTML = ''; // Clear the cell
+    //change pacMan position
+    ghost.row = nextGhostPos.row;
+    ghost.col = nextGhostPos.col;
+    // check if PacMan has collided after changing the position and before rendering, it updates the position to te respawn if collided before rendering
+    if (checkCollision()) {
+        respawnPacMan()
+    }
+    // Render Pac-Man in the new position
+    // renderPacMan();
+    renderGhost()
+    }else {
+        return;
+    }
+}
+
+function getValidGhostMove () {
+    let nextGhostPos = calNextGhostMove(generateDirections())
+
+    while (validateGhostNextMove(nextGhostPos) === false) {
+        nextGhostPos = calNextGhostMove(generateDirections())
+    }
+
+    return nextGhostPos
+}
+
+function handleInterval () {
+    const nextGhostPos = getValidGhostMove()
+    moveGhost(nextGhostPos)
+}
+
 function initGame () {
     createMaze()
     renderPacMan()
     renderGhost()
     renderPellets()
     calPelletsLeft()
+    // interval = setInterval(function () {
+    //     let randomNum = Math.floor(Math.random() * 4)
+    //     let nextRandomDirection
+    //     if (randomNum === 0) {
+    //         nextRandomDirection = 'top'
+    //     }else if (randomNum === 1) {
+    //         nextRandomDirection = 'right'
+    //     }else if (randomNum === 2) {
+    //         nextRandomDirection = 'bottom'
+    //     }else if (randomNum === 3) {
+    //         nextRandomDirection = 'left'
+    //     }
+    //     console.log(`rNum: ${randomNum}, rDirection: ${nextRandomDirection}`);
+    // }, 1000)
+    interval = setInterval(handleInterval, 500)
 }
 
 function handleKeyPress (event) {
     const nextMoveDirection = catchPressedKeyValue(event)
     const nextPosition = calNextMove(nextMoveDirection)
-    
+
     if (gameState.lives >= 1 || gameState.pelletsLeft > 0) {
         if (!gameState.isGameOver) {
             collectPellet(nextPosition)
