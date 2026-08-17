@@ -158,7 +158,7 @@ function movePacMan (nextPosition) {
     if (validateNextMove(nextPosition)) {
         // Remove Pac-Man from the current position
         const currentCell = cellsArray[pacMan.row][pacMan.col];
-        currentCell.innerHTML = ''; // Clear the cell
+        currentCell.querySelector('.pac-man').remove() // Clear the cell
         //change pacMan position
         pacMan.row = nextPosition.row;
         pacMan.col = nextPosition.col;
@@ -180,7 +180,7 @@ function collectPellet (nextPos) {
         gameState.score += 10
         gameState.pelletsLeft -= 1
         console.log('SCORE: ' + gameState.score);
-        cellAtNextPacPos.innerHTML = ''
+        cellAtNextPacPos.querySelector('.pellets').remove()
         displayScoreElement.textContent = gameState.score
     }
 }
@@ -206,12 +206,16 @@ function checkCollision () {
 }
 
 function respawnPacMan () {
+    const oldCell = cellsArray[pacMan.row][pacMan.col]
         if (gameState.lives >= 1) {
+            const pacManElement = oldCell.querySelector('.pac-man')
+            if (pacManElement) {
+                pacManElement.remove()
+            }
             pacMan.row = spawnPositions.pacMan.row
             pacMan.col = spawnPositions.pacMan.col
             gameState.lives -= 1
             console.log(gameState.lives + ' Lives Left');
-            
         }
 }
 
@@ -227,9 +231,11 @@ function livesDisplay () {
 
 function checkIsGameOver () {
     if (gameState.isGameOver === true && gameState.pelletsLeft < 1 && gameState.lives >= 1) {
+        clearInterval(interval)
         overlayElement.style.display = 'flex'
         endMessageElement.textContent = 'CONGRATS YOU WON'
     }else if (gameState.isGameOver === true && gameState.pelletsLeft > 0 && gameState.lives < 1) {
+        clearInterval(interval)
         overlayElement.style.display = 'flex'
         endMessageElement.textContent = 'GAME OVER'
     }
@@ -297,17 +303,12 @@ function moveGhost (nextGhostPos) {
         respawnPacMan()
         renderPacMan()
     }
-    // Render Pac-Man in the new position
-    // renderPacMan();
     renderGhost()
 
     }else {
         return;
     }
-    setTimeout(() => {
-        currentGhostCell.innerHTML = '<img src="./Images/Pellet.png" class="pellets">'
-        
-    }, 500);
+
 }
 
 function getValidGhostMove () {
@@ -322,7 +323,19 @@ function getValidGhostMove () {
 
 function handleInterval () {
     const nextGhostPos = getValidGhostMove()
-    moveGhost(nextGhostPos)
+    if (gameState.lives >= 1 || gameState.pelletsLeft > 0) {
+        if (!gameState.isGameOver) {
+            moveGhost(nextGhostPos)
+            livesDisplay()
+        }
+    }
+
+    if (gameState.lives < 1 || gameState.pelletsLeft === 0) {
+        gameState.isGameOver = true
+        console.log(gameState.isGameOver);
+    }
+
+    checkIsGameOver()
 }
 
 function initGame () {
