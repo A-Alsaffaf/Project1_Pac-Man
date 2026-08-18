@@ -147,3 +147,16 @@ body {
     height: 40px;
     border-color: #FFFF00;
 }
+
+#mute{
+    height: 40px;
+    width: 40px;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+#mute:hover {
+    background-color: #4040eb;
+}
+

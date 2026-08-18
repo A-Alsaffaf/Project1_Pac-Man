@@ -51,6 +51,9 @@ let gameState = {
     isGameOver: false,
 }
 let interval 
+let backgroundMusic = new Audio('./Audios/PacMan Original Theme.mp3')
+let VictorySound = new Audio('./Audios/Victory_Sound_Effect.mp3')
+let GameOverSound = new Audio('./Audios/Game_Over_Sound_Effect.mp3')
 /*------------------------ Cached Element References ------------------------*/
 const mazeContainer = document.getElementById('maze-container')
 const liveElements = document.getElementsByClassName('lives')
@@ -234,10 +237,14 @@ function checkIsGameOver () {
         clearInterval(interval)
         overlayElement.style.display = 'flex'
         endMessageElement.textContent = 'CONGRATS YOU WON'
+        VictorySound.play()
+        backgroundMusic.pause()
     }else if (gameState.isGameOver === true && gameState.pelletsLeft > 0 && gameState.lives < 1) {
         clearInterval(interval)
         overlayElement.style.display = 'flex'
         endMessageElement.textContent = 'GAME OVER'
+        GameOverSound.play()
+        backgroundMusic.pause()
     }
 }
 
@@ -338,6 +345,7 @@ function handleInterval () {
     checkIsGameOver()
 }
 
+
 function initGame () {
     createMaze()
     renderPacMan()
@@ -346,6 +354,8 @@ function initGame () {
     calPelletsLeft()
 
     interval = setInterval(handleInterval, 500)
+    backgroundMusic.play()
+    backgroundMusic.loop = true
 }
 
 function handleKeyPress (event) {
