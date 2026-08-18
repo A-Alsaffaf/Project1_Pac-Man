@@ -61,6 +61,7 @@ const displayScoreElement = document.getElementById('score')
 const overlayElement = document.getElementById('overlay')
 const endMessageElement = document.getElementById('end-msg')
 const endButtonElement = document.getElementById('end-btn')
+const muteButton = document.getElementById('mute')
 
 /*-------------------------------- Functions --------------------------------*/
 
@@ -238,12 +239,14 @@ function checkIsGameOver () {
         overlayElement.style.display = 'flex'
         endMessageElement.textContent = 'CONGRATS YOU WON'
         VictorySound.play()
+        VictorySound.volume = 0.5
         backgroundMusic.pause()
     }else if (gameState.isGameOver === true && gameState.pelletsLeft > 0 && gameState.lives < 1) {
         clearInterval(interval)
         overlayElement.style.display = 'flex'
         endMessageElement.textContent = 'GAME OVER'
         GameOverSound.play()
+        GameOverSound.volume = 0.5
         backgroundMusic.pause()
     }
 }
@@ -345,6 +348,16 @@ function handleInterval () {
     checkIsGameOver()
 }
 
+function toggleMute() {
+    backgroundMusic.muted = !backgroundMusic.muted
+
+    if (backgroundMusic.muted) {
+        muteButton.src = './Images/UnmuteLogo.png'
+    }else {
+        muteButton.src = './Images/MuteLogo.png'
+    }
+}
+
 
 function initGame () {
     createMaze()
@@ -355,6 +368,7 @@ function initGame () {
 
     interval = setInterval(handleInterval, 500)
     backgroundMusic.play()
+    backgroundMusic.volume = 0.5
     backgroundMusic.loop = true
 }
 
@@ -384,3 +398,4 @@ document.addEventListener ('keydown', handleKeyPress)
 endButtonElement.addEventListener('click', function () {
     location.reload()
 })
+muteButton.addEventListener('click', toggleMute)

@@ -160,3 +160,7 @@ body {
     background-color: #4040eb;
 }
 
+#mute :active {
+border: solid;
+border-color: #FFFF00;
+}
