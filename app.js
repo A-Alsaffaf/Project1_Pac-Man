@@ -82,6 +82,15 @@ function renderPacMan () {
     const pacManElement = document.createElement('img')
     pacManElement.src = './Images/pac-man.gif'
     pacManElement.classList.add('pac-man')
+    if (pacMan.direction === 'right') {
+        pacManElement.style.transform = 'rotate(0deg)'
+    }else if (pacMan.direction === 'down') {
+        pacManElement.style.transform = 'rotate(90deg)'
+    }else if (pacMan.direction === 'left') {
+        pacManElement.style.transform = 'rotate(180deg)'
+    }else if (pacMan.direction === 'up') {
+        pacManElement.style.transform = 'rotate(270deg)'
+    }
     cellsArray[pacMan.row][pacMan.col].appendChild(pacManElement)
 
 }
@@ -121,6 +130,7 @@ function catchPressedKeyValue (event) {
     }else {
         return 
     }
+    pacMan.direction = nextMoveDirection
     console.log(nextMoveDirection);
     event.preventDefault()
     return nextMoveDirection
